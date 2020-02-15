@@ -39,9 +39,22 @@ Models will be evaluated on both the training data they were trained on and vali
 
 ### Data Exploration
 
+I started my initial exploratory data analysis looking at the top page visits in the dataset.
+
+![Top Page Visits](/Images/Top-Page-Visits.png)
+
+From the summary the main page that is important right away is cancellation confirmation which I will use to determine if a user has churned. From the top pages visited it is also important to see the potential information we can aggregate and understand about a user's behavior such as the number of songs they listened to, the number of positive/negative ratings they have given, the humber of friends they have on the platform and if they are experiencing errors.
+
+![Churn Raw](/Images/Churn-raw.png)
+
+As you can see out of our total number of 448 users 349 are subscribers and 99 are no longer subscribers and have churned. This is a bit unbalanced but not as bad as many fraud datasets. What is not ideal for a machine learning algorithm is that despite starting with what seemed to be a resonably large dataset of 543705 rows of logs there are effectively only 448 data points in our model.
+
 
 
 ### Data Visualization
+
+![Churn By Gender](/Images/Churn-by-gender.png)
+
 
 ## Methodology
 
