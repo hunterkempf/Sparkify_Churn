@@ -166,7 +166,7 @@ For this analysis we tried 3 different models and compared them on the same metr
 
 ### Reflection
 
-
+In Conclusion, I took a large dataset of user behavior logs, created a model ready dataset using PySpark and used that dataset to predict if a user is likely to churn. I really enjoyed getting to work with a large dataset and trying out jupyter notebooks hosted on a cloud provider. One aspect I found difficult was the time it takes for larger datasets to run and the limited selection of models in PySpark compared to Scikit Learn.
 
 ### Improvement
 
@@ -174,6 +174,14 @@ Future Improvements to this model can be from the following areas:
 
 - Spark Structured Streaming: For a real usecase it would be important to gain the understanding that a user is likely to churn right away thus it would be a good idea to use Spark's Structured Streaming API to get model scores back in near real time.
 
+- Time Based Truth Set: Since the data is about user churn it would be better if I created a truth set on user behavior for a certain time ie did a user churn in the next week from the features. This would require significantly more work on the data engineering side but could allow for a more realistic dataset of the propensity to churn problem.
+
 - Date Based Features: The features I created were all relatively simple so including some features based on the number of days or months that a user has been on the service would be useful ie logins per month or songs per month. 
 
 - Trending Features: What a user has done in the last session, last day, last week etc may have predictive power that would allow for more insights to be found. Adding these trending features could provide an improvement to predictions we are making.
+
+- Unbalanced Data Corrections: We have a relatively unbalanced dataset ~22% of our users have churned. We could use oversampling, undersampling or model weights to try to correct for this.
+
+- XGBoost: I really like using XGBoost due to its predictive power. PySpark doesnt have an implementation of XGBoost yet so if I imported the dataset to pandas and ran XGBoost on the dataframe I believe I would gain some benefits of using a better algorithm.
+
+- H2O Sparkling Water: H2O created an opensource connector for using an H2O trained model in spark. Given H2O's prebuilt functionality it would improve both the model selection I have to chose from and the Grid Search over hyper-parameters that I would have to do.
