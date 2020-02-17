@@ -58,19 +58,25 @@ As you can see out of our total number of 448 users 349 are subscribers and 99 a
 
 ![Churn By Gender](/Images/Churn-by-gender.png)
 
+![CountThumbsUp EDA](/Images/CountThumbsUp-EDA.png)
+
 ### Data Exploration: Full Data
 
 For the Full Dataset I repeated much of the EDA I did for the smaller dataset but wanted to see how the analysis would differ or remain the same so much of the views will be the same. 
 
-![Top Page Visits](/Images/Top-Page-Visits.png)
+![Top Page Visits Full](/Images/Top-Page-Visits-full.png)
 
 From the summary the main page that is important right away is cancellation confirmation which I will use to determine if a user has churned. From the top pages visited it is also important to see the potential information we can aggregate and understand about a user's behavior such as the number of songs they listened to, the number of positive/negative ratings they have given, the humber of friends they have on the platform and if they are experiencing errors.
 
-![Churn Raw](/Images/Churn-raw.png)
+![Churn Raw Full](/Images/Churn-raw-full.png)
 
 As you can see out of our total number of 22,278 users 17,275 are subscribers and 5,003 are no longer subscribers and have churned. This is roughly the same distribution as the sample dataset which had 22.1% of the users churn and the full dataset has 22.5% churn. We still started out with a much larger dataset of 26,259,199 rows of logs than the final model ready dataset of 22,278 data points but 22k datapoints should be enough to really train some of the more advanced models which makes the larger dataset much more attractive to use for our final model.
 
 ### Data Visualization: Full Data
+
+![Churn By Gender Full](/Images/Churn-by-gender-full.png)
+
+![CountThumbsUp EDA Full](/Images/CountThumbsUp-EDA-full.png)
 
 ## Methodology
 
