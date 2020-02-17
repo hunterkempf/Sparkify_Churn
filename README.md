@@ -82,13 +82,73 @@ As you can see out of our total number of 22,278 users 17,275 are subscribers an
 
 ### Data Preprocessing
 
+The dataset of log records needs a lot of preprocessing to create a dataset that is model ready for a machine learning algorithm. 
+
+The first step that needs to be done is to create a truth set. This means for our case that we need to look at the cases where a user has churned. If a user visits the page Cancellation Confirmation it can be inferred that they have cancelled their service. This means that for our labels we can look at every user and determine if they visited that page or not and that will be the basis for our dataset. 
+
+Because our dataset is aggregated at the userId level due to our label variable, all of our model features should be aggregated at the userId level as well. This means most of our data points will have to be counts, averages or sums. In my case I chose to build 14 aggregate features. 
+
 ### Implementation
 
+Because of the size of the full dataset (12 GB), Spark and more specifically PySpark was chosen for the implementation of the Preprocessing because of how well it performs on large datasets. It can be run on single machines (which may run slowly) or on clusters on premise or in the public cloud (AWS, AZURE, Google, IBM) which allows for the same code to be run in any different environment. 
+
+Here is an example of an aggregated feature using PySpark:
+
+First we create an aggregated dataset based on our criteria
+```python
+df = df.withColumn('ThumbsUp', (when(col('page')== 'Thumbs Up',1)\
+                                                            .otherwise(0)))
+user_thumbsUp_df = df.groupby('userId')\
+                       .agg(_sum('ThumbsUp')\
+                       .alias('countThumbsUp'))
+
+```
+Then we join the now aggregated data back to the labeled truth set
+```python
+# Join data back to our user dataframe
+user_labeled_df = user_labeled_df.join(user_thumbsUp_df, 'userId')
+user_labeled_df.show(5)
+```
+
 ### Refinement
+
+The Features that I have built will be refined and weighted by the PySpark ML library models that I use to make the churn predictions. If a feature is not predictive for a certain type of model it will either have a very low weight or a weight of zero. 
+
+Those models can also be refined and hyperparameter tuned to change how they interact with the variables.
 
 ## Results
 
 ### Model Evaluation and Validation
+
+#### Logistic Regression
+
+Basic Model
+
+![Logistic Regression Train AUC](/Images/Logistic-Regression-Training-AUC.png)
+
+![Logistic Regression Test AUC](/Images/Logistic-Regression-Test-AUC.png)
+
+Grid Search Hyper Parameter Tuned Model
+
+![Logistic Regression Train AUC tuned](/Images/Logistic-Regression-Training-AUC-tuned.png)
+
+![Logistic Regression Test AUC tuned](/Images/Logistic-Regression-Test-AUC-tuned.png)
+
+#### Desicion Tree
+
+#### Gradient Boosted Tree (GBTree)
+
+Basic Model
+
+![GBTree Train AUC](/Images/GBTree-Training-AUC.png)
+
+![GBTree Test AUC](/Images/GBTree-Test-AUC.png)
+
+Grid Search Hyper Parameter Tuned Model
+
+![GBTree Train AUC tuned](/Images/GBTree-Training-AUC-tuned.png)
+
+![GBTree Test AUC tuned](/Images/GBTree-Test-AUC-tuned.png)
 
 ### Justification
 
