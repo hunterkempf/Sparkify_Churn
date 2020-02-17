@@ -3,10 +3,12 @@
 
 Analysis of Churn in Sparkify Users. This Project uses PySpark and a Dataset provided by Udacity 
 
+- [Overview of Files in Repo](#overview-of-files-in-repo)
 - [Project Definition](#project-definition)
   * [Project Overview](#project-overview)
   * [Problem Statement](#problem-statement)
   * [Metrics](#metrics)
+- [Libraries Used](#libraries-used) 
 - [Analysis](#analysis)
   * [Data Exploration: Sample Data](#data-exploration-sample-data)
   * [Data Visualization: Sample Data](#data-visualization-sample-data)
@@ -23,6 +25,15 @@ Analysis of Churn in Sparkify Users. This Project uses PySpark and a Dataset pro
   * [Reflection](#reflection)
   * [Improvement](#improvement)  
 
+
+## Overview of Files in Repo
+
+ - Large-Spark-Capstone-ML.ipynb : Jupyter Notebook file with PySpark code analysis of 12 GB "Large" sized log data
+ - Spark-Capstone-ML.ipynb : Jupyter Notebook File with PySpark code analysis of 242 MB "Medium" sized log data
+ - medium-sparkify-event-data.json.zip : 242 MB "Medium" sized log data
+ - Images/ : This folder contains screenshots of plots for the README.md Document
+
+
 ## Project Definition
 
 ### Project Overview
@@ -37,9 +48,45 @@ Sparkify is a music streaming company that is similar to Spotify or Pandora. The
 
 Models will be evaluated on both the training data they were trained on and validation data that they were not trained on. Area Under the ROC Curve (AUC) will be the main metric used to chose between different models. AUC captures information from both True Positive Rate and False Positive Rate to provide a single score over a range of thresholds and is commonly used for classification models. 
 
+## Libraries Used
+
+General Python Libraries
+```python
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import sklearn.metrics as metrics
+```
+
+PySpark SQL libraries
+```python
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import isnan, count, when, col, desc, udf, col, sort_array, asc, avg
+from pyspark.sql.functions import sum as _sum
+from pyspark.sql.types import FloatType
+```
+
+PySpark ML Libraries
+```python
+from pyspark.ml.classification import LogisticRegression, DecisionTreeClassifier, GBTClassifier 
+from pyspark.ml.evaluation import BinaryClassificationEvaluator
+from pyspark.ml.tuning import ParamGridBuilder, TrainValidationSplit
+from pyspark.ml.linalg import Vectors
+```
+
 ## Analysis
 
 I started my analysis with a smaller version of the dataset attached on the github as medium-sparkify-event-data.json.zip this allowed me to more quickly prototype my solution without the long run times of the 12 GB large dataset. In general I think that this is a good approach to analysis as long as the smaller dataset generally is representative of the larger dataset. 
+
+The Large Dataset is stored at s3n://udacity-dsnd/sparkify/sparkify_event_data.json to download it from a browser or non AWS instance use the following link http://udacity-dsnd.s3.amazonaws.com/sparkify/sparkify_event_data.json
+
+Before doing anything more advanced with Exploratory Data Analysis it is important to look at the Schema of the Dataset.
+
+![Dataset Schema](/Images/Schema.png)
+
+Also for reference this is what a row of the Dataset looks like:
+
+![Single Row](/Images/Single-Row.png)
 
 ### Data Exploration: Sample Data
 
@@ -128,11 +175,15 @@ Basic Model
 
 ![Logistic Regression Test AUC](/Images/Logistic-Regression-Test-AUC.png)
 
+This model is basic but does not appear to be overfit because the AUC for training and test datasets appear to be roughly the same. The nice thing about logistic regression is that it is a simple model that can be resonably interpretable. In order to optimize the model performance a parameter grid search can be used to use some elastic net regularization as well as if an intercept should be fit or not. That should most likely make a more generalizable model that performs well.
+
 Grid Search Hyper Parameter Tuned Model
 
 ![Logistic Regression Train AUC tuned](/Images/Logistic-Regression-Training-AUC-tuned.png)
 
 ![Logistic Regression Test AUC tuned](/Images/Logistic-Regression-Test-AUC-tuned.png)
+
+Hyper-parameter tuning results in roughly the same outcome as the model defaults. In this case we could expand our grid search or try a different model.
 
 #### Desicion Tree
 
@@ -144,16 +195,41 @@ Basic Model
 
 ![GBTree Test AUC](/Images/GBTree-Test-AUC.png)
 
+This model improves the best AUC we were able to achieve on the training and test sets that we were able to get with Logistic Regression or Decision Trees! In order to combat the small overfitting we see with the drop between training and test AUC a parameter grid search can be used to try to optimize hyperparameter tuning similar to what we have done for the Logistic Regression above. Usually this will result in a more generalizable model.
+
 Grid Search Hyper Parameter Tuned Model
 
 ![GBTree Train AUC tuned](/Images/GBTree-Training-AUC-tuned.png)
 
 ![GBTree Test AUC tuned](/Images/GBTree-Test-AUC-tuned.png)
 
+This model with parameter tuning and a validation split performs a little worse than the GBTree model with the default parameters in training but you can see that there is basically no drop off in the test set. I think that this model would be better to use and would generally perform more reliably than the original GBTree model we had.
+
 ### Justification
+
+For this analysis we tried 3 different models and compared them on the same metric of AUC. Ultimately GBTree proved to be the best algorithm to use for our model. Using a Grid Search and Train/Validation Splits during the training process we were able to find optimal parameters that did not show signs of overfitting. 
 
 ## Conclusion
 
 ### Reflection
 
+In Conclusion, I took a large dataset of user behavior logs, created a model ready dataset using PySpark and used that dataset to predict if a user is likely to churn. I really enjoyed getting to work with a large dataset and trying out jupyter notebooks hosted on a cloud provider. One aspect I found difficult was the time it takes for larger datasets to run and the limited selection of models in PySpark compared to Scikit Learn.
+
 ### Improvement
+
+Future Improvements to this model can be from the following areas:
+
+- Spark Structured Streaming: For a real usecase it would be important to gain the understanding that a user is likely to churn right away thus it would be a good idea to use Spark's Structured Streaming API to get model scores back in near real time.
+
+- Time Based Truth Set: Since the data is about user churn it would be better if I created a truth set on user behavior for a certain time ie did a user churn in the next week from the features. This would require significantly more work on the data engineering side but could allow for a more realistic dataset of the propensity to churn problem.
+
+- Date Based Features: The features I created were all relatively simple so including some features based on the number of days or months that a user has been on the service would be useful ie logins per month or songs per month. 
+
+- Trending Features: What a user has done in the last session, last day, last week etc may have predictive power that would allow for more insights to be found. Adding these trending features could provide an improvement to predictions we are making.
+
+- Unbalanced Data Corrections: We have a relatively unbalanced dataset ~22% of our users have churned. We could use oversampling, undersampling or model weights to try to correct for this.
+
+- XGBoost: I really like using XGBoost due to its predictive power. PySpark doesnt have an implementation of XGBoost yet so if I imported the dataset to pandas and ran XGBoost on the dataframe I believe I would gain some benefits of using a better algorithm.
+
+- H2O Sparkling Water: H2O created an opensource connector for using an H2O trained model in spark. Given H2O's prebuilt functionality it would improve both the model selection I have to chose from and the Grid Search over hyper-parameters that I would have to do.
+
