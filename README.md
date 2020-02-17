@@ -3,10 +3,12 @@
 
 Analysis of Churn in Sparkify Users. This Project uses PySpark and a Dataset provided by Udacity 
 
+- [Overview of Files in Repo](#overview-of-files-in-repo)
 - [Project Definition](#project-definition)
   * [Project Overview](#project-overview)
   * [Problem Statement](#problem-statement)
   * [Metrics](#metrics)
+- [Libraries Used](#libraries-used) 
 - [Analysis](#analysis)
   * [Data Exploration: Sample Data](#data-exploration-sample-data)
   * [Data Visualization: Sample Data](#data-visualization-sample-data)
@@ -23,6 +25,16 @@ Analysis of Churn in Sparkify Users. This Project uses PySpark and a Dataset pro
   * [Reflection](#reflection)
   * [Improvement](#improvement)  
 
+
+## Overview of Files in Repo
+
+ - Large-Spark-Capstone-ML.ipynb : Jupyter Notebook file with PySpark code analysis of 12 GB "Large" sized log data
+ - Spark-Capstone-ML.ipynb : Jupyter Notebook File with PySpark code analysis of 242 MB "Medium" sized log data
+ - medium-sparkify-event-data.json.zip : 242 MB "Medium" sized log data
+ - Images/ : This folder contains screenshots of plots for the README.md Document
+
+
+
 ## Project Definition
 
 ### Project Overview
@@ -36,6 +48,32 @@ Sparkify is a music streaming company that is similar to Spotify or Pandora. The
 ### Metrics
 
 Models will be evaluated on both the training data they were trained on and validation data that they were not trained on. Area Under the ROC Curve (AUC) will be the main metric used to chose between different models. AUC captures information from both True Positive Rate and False Positive Rate to provide a single score over a range of thresholds and is commonly used for classification models. 
+
+## Libraries Used
+
+General Python Libraries
+```python
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import sklearn.metrics as metrics
+```
+
+PySpark SQL libraries
+```python
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import isnan, count, when, col, desc, udf, col, sort_array, asc, avg
+from pyspark.sql.functions import sum as _sum
+from pyspark.sql.types import FloatType
+```
+
+PySpark ML Libraries
+```python
+from pyspark.ml.classification import LogisticRegression, DecisionTreeClassifier, GBTClassifier 
+from pyspark.ml.evaluation import BinaryClassificationEvaluator
+from pyspark.ml.tuning import ParamGridBuilder, TrainValidationSplit
+from pyspark.ml.linalg import Vectors
+```
 
 ## Analysis
 
@@ -185,3 +223,4 @@ Future Improvements to this model can be from the following areas:
 - XGBoost: I really like using XGBoost due to its predictive power. PySpark doesnt have an implementation of XGBoost yet so if I imported the dataset to pandas and ran XGBoost on the dataframe I believe I would gain some benefits of using a better algorithm.
 
 - H2O Sparkling Water: H2O created an opensource connector for using an H2O trained model in spark. Given H2O's prebuilt functionality it would improve both the model selection I have to chose from and the Grid Search over hyper-parameters that I would have to do.
+
