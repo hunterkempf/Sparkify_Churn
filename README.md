@@ -34,7 +34,6 @@ Analysis of Churn in Sparkify Users. This Project uses PySpark and a Dataset pro
  - Images/ : This folder contains screenshots of plots for the README.md Document
 
 
-
 ## Project Definition
 
 ### Project Overview
@@ -78,6 +77,16 @@ from pyspark.ml.linalg import Vectors
 ## Analysis
 
 I started my analysis with a smaller version of the dataset attached on the github as medium-sparkify-event-data.json.zip this allowed me to more quickly prototype my solution without the long run times of the 12 GB large dataset. In general I think that this is a good approach to analysis as long as the smaller dataset generally is representative of the larger dataset. 
+
+The Large Dataset is stored at s3n://udacity-dsnd/sparkify/sparkify_event_data.json to download it from a browser or non AWS instance use the following link http://udacity-dsnd.s3.amazonaws.com/sparkify/sparkify_event_data.json
+
+Before doing anything more advanced with Exploratory Data Analysis it is important to look at the Schema of the Dataset.
+
+![Dataset Schema](/Images/Schema.png)
+
+Also for reference this is what a row of the Dataset looks like:
+
+![Single Row](/Images/Single-Row.png)
 
 ### Data Exploration: Sample Data
 
