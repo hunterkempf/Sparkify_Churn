@@ -128,11 +128,15 @@ Basic Model
 
 ![Logistic Regression Test AUC](/Images/Logistic-Regression-Test-AUC.png)
 
+This model is basic but does not appear to be overfit because the AUC for training and test datasets appear to be roughly the same. The nice thing about logistic regression is that it is a simple model that can be resonably interpretable. In order to optimize the model performance a parameter grid search can be used to use some elastic net regularization as well as if an intercept should be fit or not. That should most likely make a more generalizable model that performs well.
+
 Grid Search Hyper Parameter Tuned Model
 
 ![Logistic Regression Train AUC tuned](/Images/Logistic-Regression-Training-AUC-tuned.png)
 
 ![Logistic Regression Test AUC tuned](/Images/Logistic-Regression-Test-AUC-tuned.png)
+
+Hyper-parameter tuning results in roughly the same outcome as the model defaults. In this case we could expand our grid search or try a different model.
 
 #### Desicion Tree
 
@@ -144,16 +148,32 @@ Basic Model
 
 ![GBTree Test AUC](/Images/GBTree-Test-AUC.png)
 
+This model improves the best AUC we were able to achieve on the training and test sets that we were able to get with Logistic Regression or Decision Trees! In order to combat the small overfitting we see with the drop between training and test AUC a parameter grid search can be used to try to optimize hyperparameter tuning similar to what we have done for the Logistic Regression above. Usually this will result in a more generalizable model.
+
 Grid Search Hyper Parameter Tuned Model
 
 ![GBTree Train AUC tuned](/Images/GBTree-Training-AUC-tuned.png)
 
 ![GBTree Test AUC tuned](/Images/GBTree-Test-AUC-tuned.png)
 
+This model with parameter tuning and a validation split performs a little worse than the GBTree model with the default parameters in training but you can see that there is basically no drop off in the test set. I think that this model would be better to use and would generally perform more reliably than the original GBTree model we had.
+
 ### Justification
+
+For this analysis we tried 3 different models and compared them on the same metric of AUC. Ultimately GBTree proved to be the best algorithm to use for our model. Using a Grid Search and Train/Validation Splits during the training process we were able to find optimal parameters that did not show signs of overfitting. 
 
 ## Conclusion
 
 ### Reflection
 
+
+
 ### Improvement
+
+Future Improvements to this model can be from the following areas:
+
+- Spark Structured Streaming: For a real usecase it would be important to gain the understanding that a user is likely to churn right away thus it would be a good idea to use Spark's Structured Streaming API to get model scores back in near real time.
+
+- Date Based Features: The features I created were all relatively simple so including some features based on the number of days or months that a user has been on the service would be useful ie logins per month or songs per month. 
+
+- Trending Features: What a user has done in the last session, last day, last week etc may have predictive power that would allow for more insights to be found. Adding these trending features could provide an improvement to predictions we are making.
