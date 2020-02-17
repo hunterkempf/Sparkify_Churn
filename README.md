@@ -8,8 +8,10 @@ Analysis of Churn in Sparkify Users. This Project uses PySpark and a Dataset pro
   * [Problem Statement](#problem-statement)
   * [Metrics](#metrics)
 - [Analysis](#analysis)
-  * [Data Exploration](#data-exploration)
-  * [Data Visualization](#data-visualization)
+  * [Data Exploration: Sample Data](#data-exploration-sample-data)
+  * [Data Visualization: Sample Data](#data-visualization-sample-data)
+  * [Data Exploration: Full Data](#data-exploration-full-data)
+  * [Data Visualization: Full Data](#data-visualization-full-data)
 - [Methodology](#methodology)
   * [Data Preprocessing](#data-preprocessing)
   * [Implementation](#implementation)
@@ -37,7 +39,9 @@ Models will be evaluated on both the training data they were trained on and vali
 
 ## Analysis
 
-### Data Exploration
+I started my analysis with a smaller version of the dataset attached on the github as medium-sparkify-event-data.json.zip this allowed me to more quickly prototype my solution without the long run times of the 12 GB large dataset. In general I think that this is a good approach to analysis as long as the smaller dataset generally is representative of the larger dataset. 
+
+### Data Exploration: Sample Data
 
 I started my initial exploratory data analysis looking at the top page visits in the dataset.
 
@@ -47,14 +51,26 @@ From the summary the main page that is important right away is cancellation conf
 
 ![Churn Raw](/Images/Churn-raw.png)
 
-As you can see out of our total number of 448 users 349 are subscribers and 99 are no longer subscribers and have churned. This is a bit unbalanced but not as bad as many fraud datasets. What is not ideal for a machine learning algorithm is that despite starting with what seemed to be a resonably large dataset of 543705 rows of logs there are effectively only 448 data points in our model.
+As you can see out of our total number of 448 users 349 are subscribers and 99 are no longer subscribers and have churned. This is a bit unbalanced but not as bad as many fraud datasets. What is not ideal for a machine learning algorithm is that despite starting with what seemed to be a resonably large dataset of 543,705 rows of logs there are effectively only 448 data points in our model.
 
 
-
-### Data Visualization
+### Data Visualization: Sample Data
 
 ![Churn By Gender](/Images/Churn-by-gender.png)
 
+### Data Exploration: Full Data
+
+For the Full Dataset I repeated much of the EDA I did for the smaller dataset but wanted to see how the analysis would differ or remain the same so much of the views will be the same. 
+
+![Top Page Visits](/Images/Top-Page-Visits.png)
+
+From the summary the main page that is important right away is cancellation confirmation which I will use to determine if a user has churned. From the top pages visited it is also important to see the potential information we can aggregate and understand about a user's behavior such as the number of songs they listened to, the number of positive/negative ratings they have given, the humber of friends they have on the platform and if they are experiencing errors.
+
+![Churn Raw](/Images/Churn-raw.png)
+
+As you can see out of our total number of 22,278 users 17,275 are subscribers and 5,003 are no longer subscribers and have churned. This is roughly the same distribution as the sample dataset which had 22.1% of the users churn and the full dataset has 22.5% churn. We still started out with a much larger dataset of 26,259,199 rows of logs than the final model ready dataset of 22,278 data points but 22k datapoints should be enough to really train some of the more advanced models which makes the larger dataset much more attractive to use for our final model.
+
+### Data Visualization: Full Data
 
 ## Methodology
 
