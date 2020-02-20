@@ -171,37 +171,35 @@ Those models can also be refined and hyperparameter tuned to change how they int
 
 Basic Model
 
-![Logistic Regression Train AUC](/Images/Logistic-Regression-Training-AUC.png)
+![Logistic Regression AUC](/Images/Logisitic-Regression-AUC.png)
 
-![Logistic Regression Test AUC](/Images/Logistic-Regression-Test-AUC.png)
+![Logistic Regression Coefficients](/Images/Logistic-Regression-Coefficients-plot.png)
 
 This model is basic but does not appear to be overfit because the AUC for training and test datasets appear to be roughly the same. The nice thing about logistic regression is that it is a simple model that can be resonably interpretable. In order to optimize the model performance a parameter grid search can be used to use some elastic net regularization as well as if an intercept should be fit or not. That should most likely make a more generalizable model that performs well.
 
 Grid Search Hyper Parameter Tuned Model
 
-![Logistic Regression Train AUC tuned](/Images/Logistic-Regression-Training-AUC-tuned.png)
 
-![Logistic Regression Test AUC tuned](/Images/Logistic-Regression-Test-AUC-tuned.png)
+
 
 Hyper-parameter tuning results in roughly the same outcome as the model defaults. In this case we could expand our grid search or try a different model.
 
 #### Desicion Tree
+![DT AUC](/Images/Decision-Tree-AUC.png)
 
 #### Gradient Boosted Tree (GBTree)
 
 Basic Model
 
-![GBTree Train AUC](/Images/GBTree-Training-AUC.png)
-
-![GBTree Test AUC](/Images/GBTree-Test-AUC.png)
+![GBTree AUC](/Images/GBTree-AUC.png)
 
 This model improves the best AUC we were able to achieve on the training and test sets that we were able to get with Logistic Regression or Decision Trees! In order to combat the small overfitting we see with the drop between training and test AUC a parameter grid search can be used to try to optimize hyperparameter tuning similar to what we have done for the Logistic Regression above. Usually this will result in a more generalizable model.
 
 Grid Search Hyper Parameter Tuned Model
 
-![GBTree Train AUC tuned](/Images/GBTree-Training-AUC-tuned.png)
+![GBTree AUC tuned](/Images/GBTree-AUC-tuned.png)
 
-![GBTree Test AUC tuned](/Images/GBTree-Test-AUC-tuned.png)
+![GBTree Feat Importance tuned](/Images/GBTree-Feature-Importance-tuned.png)
 
 This model with parameter tuning and a validation split performs a little worse than the GBTree model with the default parameters in training but you can see that there is basically no drop off in the test set. I think that this model would be better to use and would generally perform more reliably than the original GBTree model we had.
 
